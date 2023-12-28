@@ -30,6 +30,6 @@ app.include_router(auth.router)
 @app.get("/", response_model=List[schemas.PostOut])
 def read_root(db: Session = Depends(get_db), limit: int = 10, skip: int = 0):
     results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).all()
-    return results
+    return {"message": "welcome"}
 
 
