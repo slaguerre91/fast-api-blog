@@ -18,7 +18,7 @@ class UserAuth(BaseModel):
     password: str
 
 class Token(BaseModel):
-    access_token: EmailStr
+    access_token: str
     token_type: str
 
 class TokenData(BaseModel):
@@ -27,7 +27,7 @@ class TokenData(BaseModel):
 class BasePost(BaseModel):
     title: str
     content: str
-    published: bool
+    published: bool = True
 
 class CreatePost(BasePost):
     pass

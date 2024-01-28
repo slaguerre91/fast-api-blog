@@ -7,6 +7,7 @@ from sqlalchemy import func
 from .routers import post, user, vote, auth
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
+from app import oauth2
 
 app = FastAPI()
 
@@ -28,7 +29,7 @@ app.include_router(auth.router)
 
 
 @app.get("/", response_model=List[schemas.PostOut])
-def read_root(db: Session = Depends(get_db), limit: int = 10, skip: int = 0):
+def read_root(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0):
     results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).all()
     return results
 
